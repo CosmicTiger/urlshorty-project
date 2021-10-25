@@ -1,0 +1,32 @@
+{
+  "name": "urlshorty-project",
+  "version": "1.0.0",
+  "description": "A fullstack MERN project for the technical challenge of Nativo Company",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "jest tests"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "shortener-url"
+  ],
+  "author": "CosmicTiger | Luisangel Marcia",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.10.7",
+    "express": "^4.17.1",
+    "http": "^0.0.1-security",
+    "jest": "^27.3.1",
+    "mongoose": "^6.0.12",
+    "uniqid": "^5.4.0",
+    "valid-url": "^1.0.9"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.14"
+  }
+}
