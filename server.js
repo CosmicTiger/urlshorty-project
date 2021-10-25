@@ -1,7 +1,8 @@
 'use strict'
 
-const { EXPRESS_API_PORT } = require('./configuration/vars.config')
-const { app, server, NOW } = require('./configuration/constants.config')
+const { EXPRESS_API_PORT } = require('./config/vars.config')
+const { app, server, NOW } = require('./config/constants.config')
+const db = require('./config/db.config')
 
 const loaders = require('./loaders')
 const appRoutes = require('./router')
@@ -10,6 +11,7 @@ async function StartServer() {
     await loaders.AppLoaderInitialization({
         expressApp: app,
         expressRoutes: appRoutes,
+        mongooseInstance: db,
     })
 
     server.listen(EXPRESS_API_PORT, () => {

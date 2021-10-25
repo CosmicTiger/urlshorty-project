@@ -1,5 +1,8 @@
-const { morganDeployment } = require('../configuration/constants.config')
+const { morganDeployment } = require('../config/constants.config')
+const { API_VERSION } = require('../config/vars.config')
 const { urlencoded, json } = require('express')
+
+const shorten = require('../controllers/shorten.controller')
 
 /**
  * @author CosmicTiger | Luisangel Marcia
@@ -17,7 +20,19 @@ const ExpressLoader = async (app, routes = []) => {
     morganDeployment()
 
     // Configure routes for express server since root is '/'
-    app.get('/', (req, res) => res.send('Hello World!'))
+    const baseRootPath = `/api/${API_VERSION}`
+    app.get(baseRootPath, (_, res) => res.send('Hello World!'))
+
+    app.use(`${baseRootPath}/shorten`, shorten)
+
+    for (let route of routes) {
+        const { path = null, controller = null } = route
+
+        if (path && controller) {
+            const baseRootPrefixing = baseRootPath + path
+            app.use(baseRootPrefixing, controller)
+        }
+    }
 
     return app
 }
