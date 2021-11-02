@@ -15,12 +15,12 @@ router.post('/', (req, res) => {
 
     if (!urlData) {
         return res.status(400).send({
-            error: 'URL is required',
+            errorMsg: 'URL is required',
             statusText: 'Bad Request'
         })
     }
 
-    URLModel.findOne({ url: urlData }, (_, doc) => {
+    URLModel.findOne({ originalUrl: urlData }, (_, doc) => {
         if (doc) {
             res.send({
                 url: doc.originalUrl,
@@ -37,7 +37,7 @@ router.post('/', (req, res) => {
             webAddress.save((err) => {
                 if (err) {
                     res.send({
-                        error: 'Error saving the shortened url for this web address. Try again',
+                        errorMsg: 'Error saving the shortened url for this web address. Try again',
                         status: 404,
                         statusText: 'Not Found',
                     })

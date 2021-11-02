@@ -1,6 +1,7 @@
 const { morganDeployment } = require('../config/constants.config')
 const { API_VERSION } = require('../config/vars.config')
 const { urlencoded, json } = require('express')
+const cors = require('cors')
 
 const MongooseSchemas = require('../models')
 const { URLModel } = MongooseSchemas
@@ -19,6 +20,7 @@ const ExpressLoader = async (app, routes = []) => {
     app.use(json())
     app.use(urlencoded({ extended: true }))
     morganDeployment()
+    app.use(cors())
 
     // Configure routes for express server since root is '/'
     const baseRootPath = `/api/${API_VERSION}`
