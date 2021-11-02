@@ -8,26 +8,50 @@ const MongooseSchemas = require('../models')
 const { URLModel } = MongooseSchemas
 
 // Test API
-router.get('/test', (req, res) => res.json({ msg: 'Shorten API is working' }))
+router.get('/test', (_, res) => res.json({ msg: 'Shorten API is working' }))
 
 router.post('/', (req, res) => {
     const urlData = req.body.url
 
-    if (!req.body.url) {
-        return res.status(400).json({ error: 'url is required' })
+    if (!urlData) {
+        return res.status(400).send({
+            error: 'URL is required',
+            statusText: 'Bad Request'
+        })
     }
 
-    console.log('URL is: ', urlData)
-
-    URLModel.findOne({ url: urlData }, (err, doc) => {
+    URLModel.findOne({ url: urlData }, (_, doc) => {
         if (doc) {
-            console.log('Entry found in the Database')
+            res.send({
+                url: doc.originalUrl,
+                hash: doc._id,
+                status: 200,
+                statusText: 'OK'
+            })
         } else {
-            console.log('This is a new URL')
+            const webAddress = new URLModel({
+                _id: uniqid(),
+                originalUrl: urlData,
+            })
+
+            webAddress.save((err) => {
+                if (err) {
+                    res.send({
+                        error: 'Error saving the shortened url for this web address. Try again',
+                        status: 404,
+                        statusText: 'Not Found',
+                    })
+                }
+
+                res.send({
+                    url: urlData,
+                    hash: webAddress._id,
+                    status: 200,
+                    statusText: 'OK',
+                })
+            })
         }
     })
-
-    return res.status(200).json({ msg: urlData })
 })
 
 module.exports = router

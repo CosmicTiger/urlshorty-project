@@ -4,8 +4,9 @@
   "description": "A fullstack MERN project for the technical challenge of Nativo Company",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm start --prefix client",
+    "server": "nodemon server.js",
     "test": "jest tests"
   },
   "keywords": [
@@ -16,6 +17,7 @@
   "author": "CosmicTiger | Luisangel Marcia",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^6.3.0",
     "dayjs": "^1.10.7",
     "express": "^4.17.1",
     "http": "^0.0.1-security",
